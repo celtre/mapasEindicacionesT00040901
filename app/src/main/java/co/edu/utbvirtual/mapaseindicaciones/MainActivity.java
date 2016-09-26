@@ -10,6 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,15 +20,24 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.loopj.android.http.*;
+import cz.msebera.android.httpclient.Header;
+
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     TextView txtLatitude;
-    TextView txtLongitude;
+    TextView txtLongitude, campoLog;
     Button refresh;
     private static final int  MY_PERMISSIONS_REQUEST_FINE_LOCATION = 1;
-
+    AsyncHttpClient client = new AsyncHttpClient();
     private Location mLastLocation;
     public LocationManager mLocationManager;
+    private double latitud;
+    private double longitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +46,8 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
         txtLatitude = (TextView) findViewById(R.id.txtLatitud2);
         txtLongitude = (TextView) findViewById(R.id.txtLongitud2);
+        campoLog = (TextView) findViewById(R.id.txtJSON);
+
 
         int LOCATION_REFRESH_TIME = 10;
         int LOCATION_REFRESH_DISTANCE = 5;
@@ -59,9 +71,54 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, MapsActivity.class));
 
+                SimpleJSON();
 
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                intent.putExtra("latitud", latitud);
+                intent.putExtra("longitud", longitud);
+                startActivity(intent);
+
+            }
+        });
+    }
+    private void SimpleJSON() {
+        /*
+         * Se hace el request y se usa como argumento una subclase (anónima? Cual sería el término
+         * correcto en este caso?) de JsonHttpResponseHandler, sobreescribiendo sólo el método de
+         * request exitoso (onSuccess)
+         */
+        client.get("http://labsoftware03.unitecnologica.edu.co/archivoNicolas", null, new JsonHttpResponseHandler() {
+            /**
+             * Handler de evento "request exitoso."
+             *
+             * @param statusCode Código HTTP de la respuesta del servidor.
+             * @param headers Headers HTTP de respuesta del servidor.
+             * @param response Objeto JSON recibido.
+             */
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    // Mostrando la respuesta en LogCat y en campoLog, en la Activity.
+                    Log.v("Respuesta JSON:", response.getString("latitud"));
+                    latitud = Double.parseDouble(response.getString("latitud"));
+                    longitud = Double.parseDouble(response.getString("longitud"));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            /**
+             * Handler de evento "request exitoso.
+             *
+             * @param statusCode Código HTTP de la respuesta del servidor.
+             * @param headers Headers HTTP de respuesta del servidor.
+             * @param response Objeto JSON recibido.
+             */
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Log.v("Respuesta JSON:", response.toString());
             }
         });
     }
