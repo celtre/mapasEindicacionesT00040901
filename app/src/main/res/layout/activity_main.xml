@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="co.edu.utbvirtual.mapaseindicaciones.MainActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/content_main"
+        android:id="@+id/include" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="Longitud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="43dp"
+            android:layout_marginStart="43dp"
+            android:layout_marginTop="108dp"
+            android:id="@+id/txtLongitud" />
+
+        <TextView
+            android:text="Latitud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtLongitud"
+            android:layout_alignLeft="@+id/txtLongitud"
+            android:layout_alignStart="@+id/txtLongitud"
+            android:layout_marginTop="21dp"
+            android:id="@+id/txtLatitud" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/txtLongitud"
+            android:layout_toRightOf="@+id/txtLongitud"
+            android:layout_toEndOf="@+id/txtLongitud"
+            android:layout_marginLeft="79dp"
+            android:layout_marginStart="79dp"
+            android:id="@+id/txtLongitud2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/txtLatitud"
+            android:layout_alignLeft="@+id/txtLongitud2"
+            android:layout_alignStart="@+id/txtLongitud2"
+            android:id="@+id/txtLatitud2" />
+
+        <Button
+            android:text="Mapa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="177dp"
+            android:id="@+id/button"
+            android:layout_below="@+id/txtLatitud2"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>
